@@ -1,17 +1,52 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>micro swagger</title>
-  </head>
-  <body>
-    <h1>micro swagger</h1>
-    
-    
-    <script>
-      // You can also require other files to run in this process
-      const Service = require('./renderer.js')
-      Service.getFolderFilesList('./').then(files => console.log(files));
-    </script>
-  </body>
+
+<head>
+  <meta charset="UTF-8">
+  <title>micro swagger</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.css" />
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+</head>
+
+<body class="container">
+  <h1 class="title">micro swagger</h1>
+  <aside class="menu">
+    <p class="menu-label">
+      <a ><i class="fas fa-sync-alt"></i></a> Swagger Files
+    </p>
+    <ul class="menu-list">
+      
+    </ul>
+  </aside>
+
+  <script>
+    const Service = require('./renderer.js')
+    Service.getStages().then(stages => {
+      const listEl = document.querySelector('.menu-list');
+      let html = ''
+      for (let i = 0; i < stages.types.length; i++) {
+        const stage = stages.types[i];
+        html += `<li><a onclick="revealStage('${stage}')">${stage}</a>`
+        html += `<ul style="display: none;" id="${stage}">`
+        for (let j = 0; j < stages[stage].names.length; j++) {
+          const name = stages[stage].names[j];
+          html += `<li><a href="/swagger?path=${stages[stage].files[j]}">${name}</a></li>`
+        }
+        html += '</ul></li>'
+      }
+      listEl.innerHTML = html;
+    });
+
+    function revealStage(stage){
+  const list = document.querySelector('#' + stage);
+  if(list.style.display == 'none'){
+    list.style.display = 'block';
+  }
+  else{
+    list.style.display = 'none';
+  }
+}
+  </script>
+</body>
+
 </html>
