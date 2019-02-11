@@ -13,7 +13,8 @@
 
     <script>
       // You can also require other files to run in this process
-      require('./renderer.js')
+      const Service = require('./renderer.js')
+      Service.getFolderFilesList('./').then(files => console.log(files));
     </script>
   </body>
 </html>
