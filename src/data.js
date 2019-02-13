@@ -1,5 +1,6 @@
 const utils = require('./utils');
 const importFiles = require('./import');
+const log = require('electron-log');
 const getStages = async () => {
     try {
         const stages = {};
@@ -25,6 +26,7 @@ const getStages = async () => {
         }
         return stages;
     } catch (error) {
+        log.error(error.message);
         throw error;
     }
 }
