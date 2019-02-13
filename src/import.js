@@ -1,7 +1,7 @@
 const shell = require('shelljs');
 const fs = require('fs');
 const dir = './stages/';
-
+const log = require('electron-log');
 if (!fs.existsSync(dir)){
     fs.mkdirSync(dir);
 }
@@ -36,6 +36,7 @@ try {
     
     return true;
 } catch (error) {
+    log.error(error.message);
     throw error;
 }
 }
