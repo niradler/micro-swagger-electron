@@ -1,25 +1,25 @@
 {
-  "name": "electron-quick-start",
+  "name": "micro-swagger",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "micro-swagger",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/niradler/micro-swagger",
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "micro-swagger",
+    "electron"
   ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "author": "Nir Adler",
+  "license": "MIT",
   "devDependencies": {
+    "electron-builder": "^20.38.5",
     "electron": "^4.0.3"
   },
-  "dependencies": {
+  "dependencies": {    
     "shelljs": "^0.8.3"
   }
 }

@@ -6,46 +6,83 @@
   <title>micro swagger</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.css" />
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@3.17.0/swagger-ui.css" />
+  <style>
+  .menu {
+    margin-top: 25px;
+    margin-left: 25px;
+  }
+  </style>
 </head>
 
-<body class="container">
-  <h1 class="title">micro swagger</h1>
-  <aside class="menu">
-    <p class="menu-label">
-      <a ><i class="fas fa-sync-alt"></i></a> Swagger Files
-    </p>
-    <ul class="menu-list">
-      
-    </ul>
-  </aside>
+<body >
+  <div class="container">
+  <div class="columns">
+    <div class="column">
+      <aside class="menu">
+        <p class="menu-label">
+          <a onclick="refresh()"><i class="fas fa-sync-alt"></i></a> Swagger Files
+        </p>
+        <ul class="menu-list">
 
+        </ul>
+      </aside>
+    </div>
+    <div class="column">
+      <div id="swagger-ui"></div>
+    </div>
+  </div>
+</div>
+  <script src="https://unpkg.com/swagger-ui-dist@3/swagger-ui-bundle.js"></script>
   <script>
     const Service = require('./renderer.js')
-    Service.getStages().then(stages => {
-      const listEl = document.querySelector('.menu-list');
-      let html = ''
-      for (let i = 0; i < stages.types.length; i++) {
-        const stage = stages.types[i];
-        html += `<li><a onclick="revealStage('${stage}')">${stage}</a>`
-        html += `<ul style="display: none;" id="${stage}">`
-        for (let j = 0; j < stages[stage].names.length; j++) {
-          const name = stages[stage].names[j];
-          html += `<li><a href="/swagger?path=${stages[stage].files[j]}">${name}</a></li>`
-        }
-        html += '</ul></li>'
-      }
-      listEl.innerHTML = html;
-    });
 
-    function revealStage(stage){
-  const list = document.querySelector('#' + stage);
-  if(list.style.display == 'none'){
-    list.style.display = 'block';
-  }
-  else{
-    list.style.display = 'none';
-  }
-}
+    function init() {
+      Service.getStages().then(stages => {
+        console.log(stages)
+        const listEl = document.querySelector('.menu-list');
+        let html = ''
+        for (let i = 0; i < stages.types.length; i++) {
+          const stage = stages.types[i];
+          html += `<li><a onclick="revealStage('${stage}')">${stage}</a>`
+          html += `<ul style="display: none;" id="${stage}">`
+          for (let j = 0; j < stages[stage].names.length; j++) {
+            const name = stages[stage].names[j];
+            html += `<li><a onclick="loadSwagger('${stages[stage].files[j]}','${stage}')">${name}</a></li>`
+          }
+          html += '</ul></li>'
+        }
+        listEl.innerHTML = html;
+      });
+    }
+
+    function refresh() {
+      Service.importFiles().then(() => init());
+    }
+
+    function loadSwagger(path, stage) {
+      var ui = SwaggerUIBundle({
+        url: 'stages' + path,
+        dom_id: "#swagger-ui",
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIBundle.SwaggerUIStandalonePreset
+        ]
+      });
+      window.ui = ui;
+      revealStage(stage)
+    }
+
+    function revealStage(stage) {
+      const list = document.querySelector('#' + stage);
+      if (list.style.display == 'none') {
+        list.style.display = 'block';
+      } else {
+        list.style.display = 'none';
+      }
+    }
+
+    init();
   </script>
 </body>
 
