@@ -39,7 +39,6 @@
 
     function init() {
       Service.getStages().then(stages => {
-        console.log(stages)
         const listEl = document.querySelector('.menu-list');
         let html = ''
         for (let i = 0; i < stages.types.length; i++) {
