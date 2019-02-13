@@ -19,7 +19,7 @@
     "electron-builder": "^20.38.5",
     "electron": "^4.0.3"
   },
-  "dependencies": {    
+  "dependencies": {
     "shelljs": "^0.8.3"
   }
 }
