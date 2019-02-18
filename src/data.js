@@ -1,10 +1,20 @@
 const utils = require('./utils');
 const importFiles = require('./import');
 const log = require('electron-log');
+const {getDocumentsFolder} = require('platform-folders');
+const fs = require('fs');
+const documentsFolderPath = getDocumentsFolder();
+const stagesPath = documentsFolderPath + '/micro-swagger/stages';
+
 const getStages = async () => {
     try {
+        if (!fs.existsSync(documentsFolderPath + '/micro-swagger')){
+            fs.mkdirSync(documentsFolderPath + '/micro-swagger');
+        }
+        if (!fs.existsSync(stagesPath)){
+            fs.mkdirSync(stagesPath);
+        }
         const stages = {};
-        const stagesPath = './stages';
         stages.types = await utils.getFolderFilesList(stagesPath);
         if(stages.types.length == 0) {
             await importFiles();  

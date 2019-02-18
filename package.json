@@ -20,7 +20,9 @@
     "electron": "^4.0.3"
   },
   "dependencies": {
+    "electron-debug": "^2.1.0",
     "electron-log": "^3.0.1",
+    "platform-folders": "^0.3.2",
     "shelljs": "^0.8.3"
   }
 }

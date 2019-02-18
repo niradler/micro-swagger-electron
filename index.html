@@ -68,12 +68,12 @@
         }
         listEl.innerHTML = html;
         toggleLoader(false);
-      });
+      }).catch(e=>alert(e.message));
     }
 
     function refresh() {
       toggleLoader(true);
-      Service.importFiles().then(() => init());
+      Service.importFiles().then(() => init()).catch(e=>alert(e.message));
     }
 
     function loadSwagger(path, stage) {

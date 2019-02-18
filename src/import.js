@@ -1,12 +1,11 @@
 const shell = require('shelljs');
 const fs = require('fs');
-const dir = './stages/';
+const {getDocumentsFolder} = require('platform-folders');
 const log = require('electron-log');
-if (!fs.existsSync(dir)){
-    fs.mkdirSync(dir);
-}
+const documentsFolderPath = getDocumentsFolder();
+const dir = documentsFolderPath + '/micro-swagger/stages/';
 
-const getSwaggerFileById = (item) => `aws apigateway get-export --parameters extensions='postman' --rest-api-id ${item.id} --stage-name ${item.stage} --export-type swagger ./stages/${item.stage}/${item.name}.json`
+const getSwaggerFileById = (item) => `aws apigateway get-export --parameters extensions='postman' --rest-api-id ${item.id} --stage-name ${item.stage} --export-type swagger ${dir}${item.stage}/${item.name}.json`
 
 const run = (cmd) => {
     return new Promise((resolve,reject)=>
@@ -21,7 +20,14 @@ const run = (cmd) => {
 
 const importFiles = async () => {
 try {
-    if (!shell.which('aws')) throw new Error('this script require aws cli');
+    if (!fs.existsSync(dir)){
+        fs.mkdirSync(dir);
+    }
+    if (!shell.which('aws')) {
+        log.error('this script require aws cli');
+        console.error('this script require aws cli');
+    //throw new Error('this script require aws cli');
+    }
     const json = await run('aws apigateway get-rest-apis')
     const apis = JSON.parse(json);
     for (let i = 0; i < apis.items.length; i++) {
