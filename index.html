@@ -48,6 +48,11 @@
       if (!loader && isLoading) loaderEl.classList.toggle("fa-spin");
     }
 
+    function handleError(error) {
+      toggleLoader(false);
+      alert(error.message)
+    }
+
     function init() {
       toggleLoader(true);
       return Service.getStages().then(stages => {
@@ -68,12 +73,12 @@
         }
         listEl.innerHTML = html;
         toggleLoader(false);
-      }).catch(e=>alert(e.message));
+      }).catch(handleError);
     }
 
     function refresh() {
       toggleLoader(true);
-      Service.importFiles().then(() => init()).catch(e=>alert(e.message));
+      Service.importFiles().then(() => init()).catch(handleError);
     }
 
     function loadSwagger(path, stage) {

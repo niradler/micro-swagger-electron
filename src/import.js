@@ -25,8 +25,7 @@ try {
     }
     if (!shell.which('aws')) {
         log.error('this script require aws cli');
-        console.error('this script require aws cli');
-    //throw new Error('this script require aws cli');
+        throw new Error('This script require aws cli access.');
     }
     const json = await run('aws apigateway get-rest-apis')
     const apis = JSON.parse(json);
